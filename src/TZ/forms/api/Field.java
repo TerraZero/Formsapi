@@ -26,7 +26,6 @@ import TZ.sys.invoker.reflect.Reflect;
 public class Field implements FormsID {
 	
 	private static DefaultFieldArranger defaultArranger;
-	private static Map<String, Reflect> types;
 	
 	public static DefaultFieldArranger getDefaultArranger() {
 		if (Field.defaultArranger == null) {
