@@ -25,6 +25,8 @@ public @interface FormType {
 	
 	public String built() default "built";
 	
+	public Class<?>[] builtExtends() default {};
+	
 	public String input() default "input";
 	
 }

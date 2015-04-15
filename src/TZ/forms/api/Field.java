@@ -1,7 +1,6 @@
 package TZ.forms.api;
 
 import java.awt.Container;
-import java.util.Map;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -10,8 +9,6 @@ import TZ.forms.Forms;
 import TZ.forms.FormsID;
 import TZ.forms.arranger.DefaultFieldArranger;
 import TZ.forms.arranger.FieldArranger;
-import TZ.sys.Sys;
-import TZ.sys.invoker.reflect.Reflect;
 
 /**
  * 
