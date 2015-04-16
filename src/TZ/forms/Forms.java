@@ -43,8 +43,7 @@ public class Forms {
 		Step step = form.currentStep();
 		
 		for (Field field : step.fields()) {
-			field.built();
-			field.manageAdd(panel, form);
+			field.show().manageAdd(panel, form);
 		}
 		
 		int height = step.arrange(width, margin, margin);
@@ -75,7 +74,7 @@ public class Forms {
 	}
 	
 	public static void invoke(String id, String operation, Object... parameters) {
-		Sys.cascade(new String[]{
+		Sys.cascade(new String[] {
 			"forms:" + operation,
 			id + ":" + operation,
 		}, parameters);

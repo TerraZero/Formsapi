@@ -21,11 +21,17 @@ public @interface FormType {
 
 	public String name();
 	
-	public Class<?> type();
+	public String type();
+	
+	public Class<?> component();
+	
+	public String[] extend() default {};
+	
+	public String create() default "create";
 	
 	public String built() default "built";
 	
-	public Class<?>[] builtExtends() default {};
+	public String settings() default "settings";
 	
 	public String input() default "input";
 	

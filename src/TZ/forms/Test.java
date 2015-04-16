@@ -1,12 +1,10 @@
 package TZ.forms;
 
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
-import javax.swing.JTextField;
 
-import TZ.forms.api.Field;
 import TZ.forms.api.Form;
-import TZ.sys.Sys;
+import TZ.forms.api.Var;
+import TZ.forms.api.types.FieldTypes;
 import TZ.sys.invoker.annotations.Invoke;
 
 /**
@@ -30,15 +28,11 @@ public class Test {
 	
 	public static void testformbuilt(Form form) {
 		for (int i = 0; i < 5; i++) {
-			JTextField field = new JTextField();
-			field.setSize(0, 30);
-			form.step(0).add(new Field("Test Field " + i, field, "textfield"));
+			form.step(0).add(FieldTypes.create("textfield", "Test Text - " + i).option("default", new Var("test test - " + (i * 2))));
 		}
 		
 		for (int i = 0; i < 5; i++) {
-			JCheckBox box = new JCheckBox();
-			box.setSize(0, 20);
-			form.step(0).add(new Field("Test box " + i, box, "checkbox"));
+			form.step(0).add(FieldTypes.create("checkbox", "Test - " + i).option("default", new Var(i % 2 == 0)));
 		}
 	}
 	

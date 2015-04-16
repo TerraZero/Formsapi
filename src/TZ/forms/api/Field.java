@@ -7,8 +7,10 @@ import javax.swing.JLabel;
 
 import TZ.forms.Forms;
 import TZ.forms.FormsID;
+import TZ.forms.api.types.FieldTypes;
 import TZ.forms.arranger.DefaultFieldArranger;
 import TZ.forms.arranger.FieldArranger;
+import TZ.sys.Sys;
 
 /**
  * 
@@ -32,35 +34,36 @@ public class Field implements FormsID {
 	}
 	
 	public static void invoke(String id, String type, Object... parameters) {
-		
+		Sys.cascade(new String[] {
+			"field:" + type,
+			id + ":" + type,
+		}, parameters);
 	}
 
 	private String name;
 	private String id;
+	private String type;
 	private FieldArranger arranger;
-	private int margin;
-	private boolean built;
+	private Options options;
 	
-	private boolean optionLabel;
-	private boolean optionComponent;
-	
-	protected String type;
-	protected JComponent component;
 	protected JLabel label;
+	protected JComponent component;
 	
-	public Field(String name) {
+	public Field(String type, String name) {
 		this.name = name;
+		this.type = type;
 		this.id = Forms.toID(this.name);
 		this.init();
 	}
 	
-	public Field(String name, String id) {
+	public Field(String type, String name, String id) {
 		this.name = name;
 		this.id = id;
+		this.type = type;
 		this.init();
 	}
 	
-	public Field(String name, JComponent component, String type) {
+	public Field(String type, String name, JComponent component) {
 		this.name = name;
 		this.id = Forms.toID(this.name);
 		this.component = component;
@@ -68,7 +71,7 @@ public class Field implements FormsID {
 		this.init();
 	}
 	
-	public Field(String name, String id, JComponent component, String type) {
+	public Field(String type, String name, String id, JComponent component) {
 		this.name = name;
 		this.id = id;
 		this.component = component;
@@ -77,28 +80,20 @@ public class Field implements FormsID {
 	}
 	
 	public void init() {
+		this.options = new Options();
 		this.arranger = Field.getDefaultArranger();
-		this.margin = 5;
-		this.built = false;
 		
-		this.optionLabel = true;
-		this.optionComponent = true;
+		this.options.set("component", new Var(true));
+		this.options.set("label", new Var(true));
 	}
 	
-	public Field built() {
-		return this.built(false);
-	}
-	
-	public Field built(boolean force) {
-		if (!this.built || force) {
-			this.built = true;
-			Field.invoke(this.id, this.type, this);
-			
-			if (this.optionLabel) {
-				this.label = new JLabel();
-				this.label.setText(this.name);
-				this.label.setSize(0, 25);
-			}
+	public Field show() {
+		Field.invoke(this.id, this.type, this);
+		FieldTypes.settings(this);
+		if (this.option("label").bool()) {
+			this.label = new JLabel();
+			this.label.setText(this.name);
+			this.label.setSize(0, 25);
 		}
 		return this;
 	}
@@ -121,6 +116,10 @@ public class Field implements FormsID {
 		return this;
 	}
 	
+	public String type() {
+		return this.type;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public<component extends JComponent> component getComponent() {
 		return (component)this.component;
@@ -139,9 +138,8 @@ public class Field implements FormsID {
 		return this.component;
 	}
 	
-	public Field component(JComponent component, String type) {
+	public Field component(JComponent component) {
 		this.component = component;
-		this.type = type;
 		return this;
 	}
 	
@@ -158,37 +156,28 @@ public class Field implements FormsID {
 		return this.arranger;
 	}
 	
-	public Field margin(int margin) {
-		this.margin = margin;
-		return this;
-	}
-	
-	public int margin() {
-		return this.margin;
-	}
-	
 	public Field manageAdd(Container container, Form form) {
-		if (this.optionComponent) container.add(this.component);
-		if (this.optionLabel) container.add(this.label);
+		if (this.option("label").bool()) container.add(this.label);
+		if (this.option("component").bool()) container.add(this.component);
 		return this;
 	}
 	
-	public Field optionLabel(boolean option) {
-		this.optionLabel = option;
+	public Var option(String name) {
+		Var var = this.options.get(name);
+		return (var == null ? new Var() : var);
+	}
+	
+	public Var getOption(String name) {
+		return this.options.get(name);
+	}
+	
+	public Field option(String name, Var option) {
+		this.options.set(name, option);
 		return this;
 	}
 	
-	public Field optionComponent(boolean option) {
-		this.optionComponent = option;
-		return this;
-	}
-	
-	public boolean optionLabel() {
-		return this.optionLabel;
-	}
-	
-	public boolean optionComponent() {
-		return this.optionComponent;
+	public Options options() {
+		return this.options;
 	}
 	
 }

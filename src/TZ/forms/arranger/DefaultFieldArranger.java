@@ -20,16 +20,18 @@ public class DefaultFieldArranger implements FieldArranger {
 	 */
 	@Override
 	public int arrange(Step step, int index, int top, Field field, int width, int x) {
-		int height = field.margin();
-		if (field.optionLabel()) {
-			field.label().setBounds(field.margin(), top + height, width - 2 * field.margin(), field.label().getHeight());
+		int margin = field.option("margin").number(5);
+		int height = margin;
+		
+		if (field.option("label").bool()) {
+			field.label().setBounds(margin, top + height, width - 2 * margin, field.label().getHeight());
 			height += field.label().getHeight();
 		}
-		if (field.optionComponent()) {
-			field.component().setBounds(field.margin(), top + height, width - 2 * field.margin(), field.component().getHeight());
+		if (field.option("component").bool()) {
+			field.component().setBounds(margin, top + height, width - 2 * margin, field.component().getHeight());
 			height += field.component().getHeight();
 		}
-		return height + field.margin();
+		return height + margin;
 	}
 
 }
