@@ -19,20 +19,56 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface FormType {
 
+	/**
+	 * The name of the type
+	 */
 	public String name();
 	
+	/**
+	 * UNIQUE type of the form type
+	 */
 	public String type();
 	
+	/**
+	 * @return the type of the component
+	 */
 	public Class<?> component();
 	
+	/**
+	 * @return an array of extended types
+	 */
 	public String[] extend() default {};
 	
+	/**
+	 * @param Field field - the field object
+	 * @return static function
+	 */
 	public String create() default "create";
 	
+	/**
+	 * Call by all extended types
+	 * @param Field field - the field object
+	 * @return static function
+	 */
 	public String built() default "built";
 	
+	/**
+	 * @param Field field - the field object
+	 * @return static function
+	 */
 	public String settings() default "settings";
 	
+	/**
+	 * 
+	 * @return static function
+	 */
+	public String validate() default "";
+	
+	/**
+	 * @param Field field - the field object
+	 * @param FormInput input - the input object of the form
+	 * @return static function
+	 */
 	public String input() default "input";
 	
 }

@@ -33,10 +33,11 @@ public class Field implements FormsID {
 		return Field.defaultArranger;
 	}
 	
-	public static void invoke(String id, String type, Object... parameters) {
+	public static void invoke(String id, String type, String operation, Object... parameters) {
 		Sys.cascade(new String[] {
-			"field:" + type,
-			id + ":" + type,
+			"field:" + operation,
+			"field:" + type + ":" + operation,
+			id + ":" + type + ":" + operation,
 		}, parameters);
 	}
 
@@ -88,7 +89,7 @@ public class Field implements FormsID {
 	}
 	
 	public Field show() {
-		Field.invoke(this.id, this.type, this);
+		Field.invoke(this.id, this.type, "show", this);
 		FieldTypes.settings(this);
 		if (this.option("label").bool()) {
 			this.label = new JLabel();
