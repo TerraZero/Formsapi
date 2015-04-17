@@ -3,8 +3,8 @@ package TZ.forms;
 import javax.swing.JFrame;
 
 import TZ.forms.api.Form;
-import TZ.forms.api.Var;
 import TZ.forms.api.types.FieldControllers;
+import TZ.forms.api.var.Var;
 import TZ.sys.invoker.annotations.Invoke;
 
 /**

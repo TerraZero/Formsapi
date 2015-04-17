@@ -1,4 +1,4 @@
-package TZ.forms.api;
+package TZ.forms.api.var;
 
 import java.util.HashMap;
 import java.util.Map;

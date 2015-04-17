@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import TZ.forms.api.Field;
+import TZ.forms.api.Form;
 import TZ.forms.api.annotation.FormsFieldController;
 import TZ.forms.input.FormInput;
 import TZ.sys.Init;
@@ -62,25 +63,47 @@ public class FieldControllers {
 	
 	public static void invokeSettings(Field field, String type) {
 		InvokeWrapper<FormsFieldController> wrapper = FieldControllers.wrapper(type);
+		if (wrapper.annotation().settingsExtend()) {
+			for (String extend : wrapper.annotation().extend()) {
+				FieldControllers.invokeSettings(field, extend);
+			}
+		}
 		wrapper.reflect().call(wrapper.annotation().settings(), field);
 	}
 	
 	public static Field built(Field field) {
-		FieldControllers.built(field, field.type());
+		FieldControllers.invokeBuilt(field, field.type());
 		return field;
 	}
 	
-	public static void built(Field field, String type) {
+	public static void invokeBuilt(Field field, String type) {
 		InvokeWrapper<FormsFieldController> wrapper = FieldControllers.wrapper(type);
-		for (String extend : wrapper.annotation().extend()) {
-			FieldControllers.built(field, extend);
+		if (wrapper.annotation().builtExtend()) {
+			for (String extend : wrapper.annotation().extend()) {
+				FieldControllers.invokeBuilt(field, extend);
+			}
 		}
 		wrapper.reflect().call(wrapper.annotation().built(), field);
 	}
 	
 	public static void input(Field field, FormInput input) {
-		InvokeWrapper<FormsFieldController> wrapper = FieldControllers.wrapper(field.type());
+		FieldControllers.invokeInput(field, input, field.type());
+	}
+	
+	public static void invokeInput(Field field, FormInput input, String type) {
+		InvokeWrapper<FormsFieldController> wrapper = FieldControllers.wrapper(type);
 		wrapper.reflect().call(wrapper.annotation().input(), field, input);
+	}
+	
+	public static void validate(Form form, Field field) {
+		FieldControllers.invokeValidate(form, field, field.type());
+	}
+	
+	public static void invokeValidate(Form form, Field field, String type) {
+		InvokeWrapper<FormsFieldController> wrapper = FieldControllers.wrapper(type);
+		if (wrapper.annotation().validate().length() != 0) {
+			wrapper.reflect().call(wrapper.annotation().validate(), form, field);
+		}
 	}
 	
 	public static InvokeWrapper<FormsFieldController> wrapper(String type) {

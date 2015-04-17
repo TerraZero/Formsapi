@@ -20,12 +20,12 @@ import java.lang.annotation.Target;
 public @interface FormsFieldController {
 
 	/**
-	 * The name of the type
+	 * @return The name of the type
 	 */
 	public String name();
 	
 	/**
-	 * UNIQUE type of the form type
+	 * @return UNIQUE type of the form type
 	 */
 	public String type();
 	
@@ -46,20 +46,41 @@ public @interface FormsFieldController {
 	public String create() default "create";
 	
 	/**
-	 * Call by all extended types
+	 * EXTENDABLE(
+	 * 		function: extend; 
+	 * 		condition: builtExtend;
+	 * )
 	 * @param Field field - the field object
 	 * @return static function
 	 */
 	public String built() default "built";
 	
 	/**
+	 * CONDITION 
+	 * @return if built will be extend
+	 */
+	public boolean builtExtend() default true;
+	
+	/**
+	 * EXTENDABLE(
+	 * 		function: extend; 
+	 * 		condition: settingsExtend;
+	 * )
 	 * @param Field field - the field object
 	 * @return static function
 	 */
 	public String settings() default "settings";
 	
 	/**
-	 * 
+	 * CONDITION 
+	 * @return if settings will be extend
+	 */
+	public boolean settingsExtend() default true;
+	
+	/**
+	 * OPTIONALY
+	 * @param Form form - the form object
+	 * @param Field field - the field object
 	 * @return static function
 	 */
 	public String validate() default "";

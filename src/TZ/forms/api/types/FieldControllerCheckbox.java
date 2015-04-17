@@ -3,8 +3,8 @@ package TZ.forms.api.types;
 import javax.swing.JCheckBox;
 
 import TZ.forms.api.Field;
-import TZ.forms.api.Var;
 import TZ.forms.api.annotation.FormsFieldController;
+import TZ.forms.api.var.Var;
 import TZ.forms.input.FormInput;
 
 /**

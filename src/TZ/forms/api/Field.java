@@ -8,6 +8,8 @@ import javax.swing.JLabel;
 import TZ.forms.Forms;
 import TZ.forms.FormsID;
 import TZ.forms.api.types.FieldControllers;
+import TZ.forms.api.var.Options;
+import TZ.forms.api.var.Var;
 import TZ.forms.arranger.DefaultFieldArranger;
 import TZ.forms.arranger.FieldArranger;
 import TZ.sys.Sys;
