@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 
 import TZ.forms.api.Form;
 import TZ.forms.api.Var;
-import TZ.forms.api.types.FieldTypes;
+import TZ.forms.api.types.FieldControllers;
 import TZ.sys.invoker.annotations.Invoke;
 
 /**
@@ -28,11 +28,11 @@ public class Test {
 	
 	public static void testformbuilt(Form form) {
 		for (int i = 0; i < 5; i++) {
-			form.step(0).add(FieldTypes.create("textfield", "Test Text - " + i).option("default", new Var("test test - " + (i * 2))));
+			form.step(0).add(FieldControllers.create("textfield", "Test Text - " + i).option("default", new Var("test test - " + (i * 2))));
 		}
 		
 		for (int i = 0; i < 5; i++) {
-			form.step(0).add(FieldTypes.create("checkbox", "Test - " + i).option("default", new Var(i % 2 == 0)));
+			form.step(0).add(FieldControllers.create("checkbox", "Test - " + i).option("default", new Var(i % 2 == 0)));
 		}
 	}
 	

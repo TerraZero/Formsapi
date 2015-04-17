@@ -4,7 +4,7 @@ import javax.swing.JCheckBox;
 
 import TZ.forms.api.Field;
 import TZ.forms.api.Var;
-import TZ.forms.api.annotation.FormType;
+import TZ.forms.api.annotation.FormsFieldController;
 import TZ.forms.input.FormInput;
 
 /**
@@ -17,8 +17,8 @@ import TZ.forms.input.FormInput;
  * @identifier TZ.forms.api.types
  *
  */
-@FormType(name = "Checkbox", type = "checkbox", component = JCheckBox.class)
-public class FormTypeCheckbox {
+@FormsFieldController(name = "Checkbox", type = "checkbox", component = JCheckBox.class)
+public class FieldControllerCheckbox {
 	
 	public static void create(Field field) {
 		field.component(new JCheckBox());

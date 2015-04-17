@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface FormType {
+public @interface FormsFieldController {
 
 	/**
 	 * The name of the type

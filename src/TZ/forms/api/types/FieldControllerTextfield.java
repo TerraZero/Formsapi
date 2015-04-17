@@ -3,7 +3,7 @@ package TZ.forms.api.types;
 import javax.swing.JTextField;
 
 import TZ.forms.api.Field;
-import TZ.forms.api.annotation.FormType;
+import TZ.forms.api.annotation.FormsFieldController;
 import TZ.forms.input.FormInput;
 
 /**
@@ -16,8 +16,8 @@ import TZ.forms.input.FormInput;
  * @identifier TZ.forms.api.types
  *
  */
-@FormType(name = "Textfield", type = "textfield", component = JTextField.class)
-public class FormTypeTextfield {
+@FormsFieldController(name = "Textfield", type = "textfield", component = JTextField.class)
+public class FieldControllerTextfield {
 
 	public static void create(Field field) {
 		field.component(new JTextField());

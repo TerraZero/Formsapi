@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 
 import TZ.forms.Forms;
 import TZ.forms.FormsID;
-import TZ.forms.api.types.FieldTypes;
+import TZ.forms.api.types.FieldControllers;
 import TZ.forms.arranger.DefaultFieldArranger;
 import TZ.forms.arranger.FieldArranger;
 import TZ.sys.Sys;
@@ -90,7 +90,7 @@ public class Field implements FormsID {
 	
 	public Field show() {
 		Field.invoke(this.id, this.type, "show", this);
-		FieldTypes.settings(this);
+		FieldControllers.settings(this);
 		if (this.option("label").bool()) {
 			this.label = new JLabel();
 			this.label.setText(this.name);
