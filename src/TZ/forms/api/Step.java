@@ -5,6 +5,10 @@ import java.util.List;
 
 import TZ.forms.Forms;
 import TZ.forms.FormsID;
+import TZ.forms.api.arranger.Arrange;
+import TZ.forms.api.controllers.FieldControllers;
+import TZ.forms.api.input.FormInput;
+import TZ.forms.api.types.FieldContainer;
 
 /**
  * 
@@ -20,8 +24,8 @@ public class Step implements FormsID {
 
 	private String name;
 	private String id;
-	
-	protected List<Field> fields;
+	private List<Field> fields;
+	private List<Operation> operations;
 	
 	public Step(String name) {
 		this.name = name;
@@ -37,6 +41,7 @@ public class Step implements FormsID {
 	
 	public void init() {
 		this.fields = new ArrayList<Field>();
+		this.operations = new ArrayList<Operation>();
 	}
 	
 	public List<Field> fields() {
@@ -57,14 +62,29 @@ public class Step implements FormsID {
 	}
 	
 	public int arrange(int width, int x, int y) {
-		int top = y;
-		int index = 0;
+		Arrange arrange = new Arrange();
+		arrange.y = y;
+		arrange.index = 0;
+		arrange.w = width;
+		arrange.x = x;
 		
 		for (Field field : this.fields) {
-			top += field.arrange(this, index, top, width, x);
-			index++;
+			if (field.option("container").bool()) {
+				FieldContainer container = field.getComponent();
+				container.arrange(field, width, x, y);
+			}
+			field.arrange(arrange);
+			arrange.y += arrange.height;
+			arrange.index++;
 		}
-		return top;
+		return arrange.y;
+	}
+	
+	public Step input(FormInput input) {
+		for (Field field : this.fields) {
+			FieldControllers.input(field, input);
+		}
+		return this;
 	}
 	
 	public String id() {

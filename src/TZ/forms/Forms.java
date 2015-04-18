@@ -43,7 +43,7 @@ public class Forms {
 		Step step = form.currentStep();
 		
 		for (Field field : step.fields()) {
-			field.show().manageAdd(panel, form);
+			field.show().manageAdd(panel);
 		}
 		
 		int height = step.arrange(width, margin, margin);
@@ -52,7 +52,7 @@ public class Forms {
 	}
 	
 	public static String toID(String name) {
-		return name.toLowerCase().replaceAll("[^a-z0-9]", "-").replaceAll("-+", "-").replaceAll("^-|-$", "");
+		return name.toLowerCase().replaceAll("[^a-z0-9]", "_").replaceAll("_+", "_").replaceAll("^-|-$", "");
 	}
 	
 	public static<type extends FormsID> type fromID(List<type> elements, String id) {

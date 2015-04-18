@@ -18,12 +18,14 @@ public class Var {
 	public static final int TYPE_DOUBLE = 2;
 	public static final int TYPE_FLOAT = 3;
 	public static final int TYPE_BOOL = 4;
+	public static final int TYPE_OBJECT = 5;
 
 	private String string;
 	private int number;
 	private double decimal;
 	private float floatNumber;
 	private boolean bool;
+	private Object object;
 	
 	private int type;
 	
@@ -51,12 +53,17 @@ public class Var {
 		this.set(var);
 	}
 	
+	public Var(Object var) {
+		this.set(var);
+	}
+	
 	public Var empty() {
 		this.string = null;
 		this.number = 0;
 		this.decimal = 0;
 		this.floatNumber = 0;
 		this.bool = false;
+		this.object = null;
 		this.type = Var.TYPE_EMPTY;
 		return this;
 	}
@@ -93,6 +100,13 @@ public class Var {
 		this.empty();
 		this.bool = var;
 		this.type = Var.TYPE_BOOL;
+		return this;
+	}
+	
+	public Var set(Object var) {
+		this.empty();
+		this.object = var;
+		this.type = Var.TYPE_OBJECT;
 		return this;
 	}
 	
@@ -136,6 +150,16 @@ public class Var {
 		return (this.isEmpty() ? fallback : this.bool);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public<type> type object() {
+		return (type)this.object;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public<type> type object(type fallback) {
+		return (this.isEmpty() ? fallback : (type)this.object);
+	}
+	
 	public boolean isEmpty() {
 		return this.type == Var.TYPE_EMPTY;
 	}
@@ -160,8 +184,58 @@ public class Var {
 		return this.type == Var.TYPE_BOOL;
 	}
 	
+	public boolean isObject() {
+		return this.type == Var.TYPE_OBJECT;
+	}
+	
 	public int type() {
 		return this.type;
+	}
+	
+	/* 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		String string = "VAR[";
+		if (this.isEmpty()) {
+			string += "EMPTY";
+		} else if (this.isString()) {
+			string += "STRING:" + this.string;
+		} else if (this.isInt()) {
+			string += "INT:" + this.number;
+		} else if (this.isDouble()) {
+			string += "DOUBLE:" + this.decimal;
+		} else if (this.isFloat()) {
+			string += "FLOAT:" + this.floatNumber;
+		} else if (this.isBool()) {
+			string += "BOOLEAN:" + this.bool;
+		} else if (this.isObject()) {
+			string += "OBJECT:" + (this.object == null ? "NULL" : this.object.getClass()) + ":" + this.object;
+		}
+		return string + "]";
+	}
+	
+	public boolean compare(Var var) {
+		if (var.type() != this.type) return false;
+		return (this.bool == var.bool 
+			&& this.number == var.number 
+			&& this.decimal == var.decimal 
+			&& this.floatNumber == var.floatNumber 
+			&& (
+				this.string != null 
+				&& var.string != null 
+				&& this.string.equals(var.string) 
+				|| this.string == null 
+				&& var.string == null
+			) && (
+				this.object != null 
+				&& var.object != null 
+				&& this.object.equals(var.object) 
+				|| this.object == null 
+				&& var.object == null
+			)
+		);
 	}
 	
 }

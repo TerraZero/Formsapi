@@ -5,6 +5,7 @@ import java.util.List;
 
 import TZ.forms.Forms;
 import TZ.forms.FormsID;
+import TZ.forms.api.input.FormInput;
 
 /**
  * 
@@ -20,6 +21,7 @@ public class Form implements FormsID {
 	
 	private String id;
 	private String name;
+	private FormInput input;
 	
 	protected List<Step> steps;
 	protected int current;
@@ -35,6 +37,7 @@ public class Form implements FormsID {
 	public void init() {
 		this.steps = new ArrayList<Step>();
 		this.current = 0;
+		this.input = new FormInput();
 	}
 	
 	/* 
@@ -59,6 +62,20 @@ public class Form implements FormsID {
 	
 	public Step currentStep() {
 		return this.steps.get(this.current);
+	}
+	
+	public Form input() {
+		this.currentStep().input(this.input);
+		return this;
+	}
+	
+	public Form submit() {
+		this.input();
+		return this;
+	}
+	
+	public FormInput getInputs() {
+		return this.input;
 	}
 
 	/* 

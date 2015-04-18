@@ -1,10 +1,10 @@
-package TZ.forms.api.types;
+package TZ.forms.api.controllers;
 
 import javax.swing.JTextField;
 
 import TZ.forms.api.Field;
 import TZ.forms.api.annotation.FormsFieldController;
-import TZ.forms.input.FormInput;
+import TZ.forms.api.var.Var;
 
 /**
  * 
@@ -28,13 +28,14 @@ public class FieldControllerTextfield {
 		text.setSize(0, 30);
 	}
 	
-	public static void settings(Field field) {
+	public static void get(Field field, Var var) {
 		JTextField text = field.getComponent();
-		text.setText(field.option("default").string(""));
+		var.set(text.getText());
 	}
 	
-	public static void input(Field field, FormInput input) {
-		
+	public static void set(Field field, Var var) {
+		JTextField text = field.getComponent();
+		text.setText(var.string(""));
 	}
 	
 }

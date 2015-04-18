@@ -1,11 +1,10 @@
-package TZ.forms.api.types;
+package TZ.forms.api.controllers;
 
 import javax.swing.JCheckBox;
 
 import TZ.forms.api.Field;
 import TZ.forms.api.annotation.FormsFieldController;
 import TZ.forms.api.var.Var;
-import TZ.forms.input.FormInput;
 
 /**
  * 
@@ -31,13 +30,14 @@ public class FieldControllerCheckbox {
 		field.option("label", new Var(false));
 	}
 	
-	public static void settings(Field field) {
+	public static void get(Field field, Var var) {
 		JCheckBox box = field.getComponent();
-		box.setSelected(field.option("default").bool());
+		var.set(box.isSelected());
 	}
 	
-	public static void input(Field field, FormInput input) {
-		
+	public static void set(Field field, Var var) {
+		JCheckBox box = field.getComponent();
+		box.setSelected(var.bool());
 	}
 	
 }

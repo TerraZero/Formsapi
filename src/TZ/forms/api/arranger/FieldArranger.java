@@ -1,7 +1,6 @@
-package TZ.forms.arranger;
+package TZ.forms.api.arranger;
 
 import TZ.forms.api.Field;
-import TZ.forms.api.Step;
 
 /**
  * 
@@ -14,7 +13,7 @@ import TZ.forms.api.Step;
  *
  */
 public interface FieldArranger {
-
-	public int arrange(Step step, int index, int top, Field field, int width, int x);
+	
+	public void arrange(Field field, Arrange arrange);
 	
 }

@@ -62,6 +62,7 @@ public @interface FormsFieldController {
 	public boolean builtExtend() default true;
 	
 	/**
+	 * OPTIONALY
 	 * EXTENDABLE(
 	 * 		function: extend; 
 	 * 		condition: settingsExtend;
@@ -69,7 +70,7 @@ public @interface FormsFieldController {
 	 * @param Field field - the field object
 	 * @return static function
 	 */
-	public String settings() default "settings";
+	public String settings() default "";
 	
 	/**
 	 * CONDITION 
@@ -86,10 +87,25 @@ public @interface FormsFieldController {
 	public String validate() default "";
 	
 	/**
+	 * OPTIONALY
 	 * @param Field field - the field object
 	 * @param FormInput input - the input object of the form
 	 * @return static function
 	 */
-	public String input() default "input";
+	public String input() default "";
+	
+	/**
+	 * @param Field field - the field object
+	 * @param Var var - the var object to get
+	 * @return static function
+	 */
+	public String getter() default "get";
+	
+	/**
+	 * @param Field field - the field object
+	 * @param Var var - the var object to set
+	 * @return static function
+	 */
+	public String setter() default "set";
 	
 }

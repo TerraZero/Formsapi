@@ -7,11 +7,12 @@ import javax.swing.JLabel;
 
 import TZ.forms.Forms;
 import TZ.forms.FormsID;
-import TZ.forms.api.types.FieldControllers;
+import TZ.forms.api.arranger.Arrange;
+import TZ.forms.api.arranger.DefaultFieldArranger;
+import TZ.forms.api.arranger.FieldArranger;
+import TZ.forms.api.controllers.FieldControllers;
 import TZ.forms.api.var.Options;
 import TZ.forms.api.var.Var;
-import TZ.forms.arranger.DefaultFieldArranger;
-import TZ.forms.arranger.FieldArranger;
 import TZ.sys.Sys;
 
 /**
@@ -146,8 +147,8 @@ public class Field implements FormsID {
 		return this;
 	}
 	
-	public int arrange(Step step, int index, int top, int width, int x) {
-		return arranger.arrange(step, index, top, this, width, x);
+	public void arrange(Arrange arrange) {
+		arranger.arrange(this, arrange);
 	}
 	
 	public Field arranger(FieldArranger arranger) {
@@ -159,7 +160,7 @@ public class Field implements FormsID {
 		return this.arranger;
 	}
 	
-	public Field manageAdd(Container container, Form form) {
+	public Field manageAdd(Container container) {
 		if (this.option("label").bool()) container.add(this.label);
 		if (this.option("component").bool()) container.add(this.component);
 		return this;
@@ -181,6 +182,19 @@ public class Field implements FormsID {
 	
 	public Options options() {
 		return this.options;
+	}
+	
+	public Field set(Var var) {
+		FieldControllers.set(this, var);
+		return this;
+	}
+	
+	public Var get() {
+		return FieldControllers.get(this);
+	}
+	
+	public Var get(Var var) {
+		return FieldControllers.get(this, var);
 	}
 	
 }
