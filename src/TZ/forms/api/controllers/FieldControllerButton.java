@@ -16,7 +16,7 @@ import TZ.forms.api.var.Var;
  * @identifier TZ.forms.api.types
  *
  */
-@FormsFieldController(name = "Button", type = "button", component = JButton.class, settings = "settings")
+@FormsFieldController(set = "Forms", name = "Button", type = "button", component = JButton.class, settings = "settings")
 public class FieldControllerButton {
 
 	public static void create(Field field) {

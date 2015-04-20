@@ -26,6 +26,13 @@ public class DefaultFieldArranger implements FieldArranger {
 		if (field.option("fullwidth").bool(true)) {
 			fieldwidth = arrange.w - 2 * margin;
 		}
+		if (field.option("max-width").number(999999999) < fieldwidth) {
+			fieldwidth = field.option("max-width").number();
+		}
+		if (field.option("min-width").number(0) > fieldwidth) {
+			fieldwidth = field.option("min-width").number();
+		}
+		
 		if (field.option("label").bool()) {
 			field.label().setBounds(margin + arrange.x, arrange.y + height, fieldwidth, field.label().getHeight());
 			height += field.label().getHeight();

@@ -18,6 +18,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface FormsFieldController {
+	
+	/**
+	 * @return UNIQUE name of the set
+	 */
+	public String set();
 
 	/**
 	 * @return The name of the type

@@ -16,7 +16,7 @@ import TZ.forms.api.var.Var;
  * @identifier TZ.forms.api.types
  *
  */
-@FormsFieldController(name = "Textfield", type = "textfield", component = JTextField.class)
+@FormsFieldController(set = "Forms", name = "Textfield", type = "textfield", component = JTextField.class)
 public class FieldControllerTextfield {
 
 	public static void create(Field field) {

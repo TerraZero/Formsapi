@@ -25,25 +25,30 @@ import TZ.sys.invoker.reflect.InvokeWrapper;
  */
 @Init(name = "Field Types")
 public class FieldControllers {
+	
+	public static final String defaultSet = "Forms";
+	public static String initSet = FieldControllers.defaultSet;
 
 	private static Map<String, InvokeWrapper<FormsFieldController>> controllers;
 	
 	private static Map<String, CallFunc> getters;
 	private static Map<String, CallFunc> setters;
 	
-	public static void init() {
+	public static void init(String set) {
 		FieldControllers.controllers = new HashMap<String, InvokeWrapper<FormsFieldController>>();
 		FieldControllers.getters = new HashMap<String, CallFunc>();
 		FieldControllers.setters = new HashMap<String, CallFunc>();
 		
 		Invoker.each(FormsFieldController.class, (wrapper) -> {
-			FieldControllers.controllers.put(wrapper.annotation().type(), wrapper);
+			if (wrapper.annotation().set().equals(FieldControllers.initSet) || (wrapper.annotation().set().equals(FieldControllers.defaultSet) && !FieldControllers.controllers.containsKey(wrapper.annotation().type()))) {
+				FieldControllers.controllers.put(wrapper.annotation().type(), wrapper);
+			}
 		});
 	}
 	
 	public static Map<String, InvokeWrapper<FormsFieldController>> types() {
 		if (FieldControllers.controllers == null) {
-			FieldControllers.init();
+			FieldControllers.init(FieldControllers.initSet);
 		}
 		return FieldControllers.controllers;
 	}
