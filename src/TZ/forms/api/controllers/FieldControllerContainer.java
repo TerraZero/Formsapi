@@ -16,7 +16,7 @@ import TZ.forms.api.var.Var;
  * @identifier TZ.forms.api.types
  *
  */
-@FormsFieldController(name = "Container", type = "container", component = FieldContainer.class, settings = "settings", input = "input")
+@FormsFieldController(set = "Forms", name = "Container", type = "container", component = FieldContainer.class, settings = "settings", input = "input")
 public class FieldControllerContainer {
 
 	public static void create(Field field) {

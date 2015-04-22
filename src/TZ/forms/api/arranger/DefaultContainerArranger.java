@@ -21,17 +21,9 @@ public class DefaultContainerArranger implements FieldArranger {
 	@Override
 	public void arrange(Field field, Arrange arrange) {
 		int width = arrange.field.option("container:width").number();
-		int fieldwidth = field.option("width").number(field.component().getWidth());
-		int maxwidth = field.option("maxwidth").number(fieldwidth);
 		
 		arrange.w = width;
-		if (fieldwidth > width) {
-			field.option("fullwidth", new Var(true));
-		}
-		field.option("maxwidth", new Var(maxwidth));
-		if (width > maxwidth) {
-			arrange.w = maxwidth;
-		}
+		field.option("fullwidth", new Var(true));
 		field.arrange(arrange);
 		arrange.x += arrange.width + field.option("margin").number(5);
 	}

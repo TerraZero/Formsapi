@@ -55,7 +55,7 @@ public class Test {
 		
 		Field container = FieldControllers.create("container", "Test Container");
 		for (int i = 0; i < 4; i++) {
-			container.set(new Var(FieldControllers.create("button", "test con" + i).option("width", new Var(150 + i * 100))));
+			container.set(new Var(FieldControllers.create("button", "test con" + i)));
 		}
 		form.step(0).add(container);
 	}
