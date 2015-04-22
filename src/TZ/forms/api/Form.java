@@ -65,11 +65,13 @@ public class Form implements FormsID {
 	}
 	
 	public Form input() {
+		System.out.println("dev: input");
 		this.currentStep().input(this.input);
 		return this;
 	}
 	
 	public Form submit() {
+		System.out.println("dev: submit");
 		this.input();
 		return this;
 	}

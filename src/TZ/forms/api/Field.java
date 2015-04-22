@@ -10,10 +10,11 @@ import TZ.forms.FormsID;
 import TZ.forms.api.arranger.Arrange;
 import TZ.forms.api.arranger.DefaultFieldArranger;
 import TZ.forms.api.arranger.FieldArranger;
-import TZ.forms.api.controllers.FieldControllers;
+import TZ.forms.api.controllers.Fields;
 import TZ.forms.api.var.Options;
 import TZ.forms.api.var.Var;
 import TZ.sys.Sys;
+import TZ.sys.lists.Weighted;
 
 /**
  * 
@@ -25,7 +26,7 @@ import TZ.sys.Sys;
  * @identifier TZ.forms
  *
  */
-public class Field implements FormsID {
+public class Field implements FormsID, Weighted {
 	
 	private static DefaultFieldArranger defaultArranger;
 	
@@ -49,6 +50,7 @@ public class Field implements FormsID {
 	private String type;
 	private FieldArranger arranger;
 	private Options options;
+	private int weight;
 	
 	protected JLabel label;
 	protected JComponent component;
@@ -93,7 +95,7 @@ public class Field implements FormsID {
 	
 	public Field show() {
 		Field.invoke(this.id, this.type, "show", this);
-		FieldControllers.settings(this);
+		
 		if (this.option("label").bool()) {
 			this.label = new JLabel();
 			this.label.setText(this.name);
@@ -185,16 +187,29 @@ public class Field implements FormsID {
 	}
 	
 	public Field set(Var var) {
-		FieldControllers.set(this, var);
+		Fields.set(this, var);
 		return this;
 	}
 	
 	public Var get() {
-		return FieldControllers.get(this);
+		return Fields.get(this);
 	}
 	
 	public Var get(Var var) {
-		return FieldControllers.get(this, var);
+		return Fields.get(this, var);
+	}
+
+	/* 
+	 * @see TZ.sys.lists.Weighted#weight()
+	 */
+	@Override
+	public int weight() {
+		return this.weight;
+	}
+	
+	public Field weight(int weight) {
+		this.weight = weight;
+		return this;
 	}
 	
 }

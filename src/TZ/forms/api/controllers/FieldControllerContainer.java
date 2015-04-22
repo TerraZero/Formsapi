@@ -1,6 +1,7 @@
 package TZ.forms.api.controllers;
 
 import TZ.forms.api.Field;
+import TZ.forms.api.Form;
 import TZ.forms.api.annotation.FormsFieldController;
 import TZ.forms.api.input.FormInput;
 import TZ.forms.api.types.FieldContainer;
@@ -16,7 +17,15 @@ import TZ.forms.api.var.Var;
  * @identifier TZ.forms.api.types
  *
  */
-@FormsFieldController(set = "Forms", name = "Container", type = "container", component = FieldContainer.class, settings = "settings", input = "input")
+@FormsFieldController(
+	set = "Forms", 
+	name = "Container", 
+	type = "container", 
+	component = FieldContainer.class, 
+	settings = "settings", 
+	input = "input",
+	built = "built"
+)
 public class FieldControllerContainer {
 
 	public static void create(Field field) {
@@ -30,14 +39,17 @@ public class FieldControllerContainer {
 		.option("notinput", new Var(true));
 	}
 	
-	public static void settings(Field field) {
-		
+	public static void settings(Field field, Form form) {
+		FieldContainer container = field.getComponent();
+		for (Field f : container.fields()) {
+			Fields.settings(f, form);
+		}
 	}
 	
 	public static void input(Field field, FormInput input) {
 		FieldContainer container = field.getComponent();
 		for (Field f : container.fields()) {
-			FieldControllers.input(f, input);
+			Fields.input(f, input);
 		}
 	}
 	

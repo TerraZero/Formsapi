@@ -8,7 +8,7 @@ import TZ.forms.api.Form;
 import TZ.forms.api.annotation.FormsFieldController;
 import TZ.forms.api.input.FormInput;
 import TZ.forms.api.var.Var;
-import TZ.sys.Init;
+import TZ.sys.Mod;
 import TZ.sys.invoker.Invoker;
 import TZ.sys.invoker.reflect.CallFunc;
 import TZ.sys.invoker.reflect.InvokeWrapper;
@@ -23,90 +23,92 @@ import TZ.sys.invoker.reflect.InvokeWrapper;
  * @identifier TZ.forms.api.types
  *
  */
-@Init(name = "Field Types")
-public class FieldControllers {
+@Mod(name = "Field Types", register = "register")
+public class Fields {
 	
 	public static final String defaultSet = "Forms";
-	public static String initSet = FieldControllers.defaultSet;
+	public static String initSet = Fields.defaultSet;
 
 	private static Map<String, InvokeWrapper<FormsFieldController>> controllers;
 	
 	private static Map<String, CallFunc> getters;
 	private static Map<String, CallFunc> setters;
 	
-	public static void init(String set) {
-		FieldControllers.controllers = new HashMap<String, InvokeWrapper<FormsFieldController>>();
-		FieldControllers.getters = new HashMap<String, CallFunc>();
-		FieldControllers.setters = new HashMap<String, CallFunc>();
+	public static void register() {
+		Fields.controllers = new HashMap<String, InvokeWrapper<FormsFieldController>>();
+		Fields.getters = new HashMap<String, CallFunc>();
+		Fields.setters = new HashMap<String, CallFunc>();
 		
 		Invoker.each(FormsFieldController.class, (wrapper) -> {
-			if (wrapper.annotation().set().equals(FieldControllers.initSet) || (wrapper.annotation().set().equals(FieldControllers.defaultSet) && !FieldControllers.controllers.containsKey(wrapper.annotation().type()))) {
-				FieldControllers.controllers.put(wrapper.annotation().type(), wrapper);
+			if (wrapper.annotation().set().equals(Fields.initSet) || (wrapper.annotation().set().equals(Fields.defaultSet) && !Fields.controllers.containsKey(wrapper.annotation().type()))) {
+				Fields.controllers.put(wrapper.annotation().type(), wrapper);
 			}
 		});
 	}
 	
 	public static Map<String, InvokeWrapper<FormsFieldController>> types() {
-		if (FieldControllers.controllers == null) {
-			FieldControllers.init(FieldControllers.initSet);
+		if (Fields.controllers == null) {
+			Fields.register();
 		}
-		return FieldControllers.controllers;
+		return Fields.controllers;
 	}
 	
 	public static Field create(String type, String name) {
 		Field field = new Field(type, name);
-		FieldControllers.invokeCreate(field, type);
-		return FieldControllers.built(field);
+		Fields.invokeCreate(field, type);
+		return Fields.built(field);
 	}
 	
 	public static Field create(String type, String name, String id) {
 		Field field = new Field(type, name, id);
-		FieldControllers.invokeCreate(field, type);
-		return FieldControllers.built(field);
+		Fields.invokeCreate(field, type);
+		return Fields.built(field);
 	}
 	
 	public static void invokeCreate(Field field, String type) {
-		InvokeWrapper<FormsFieldController> wrapper = FieldControllers.wrapper(type);
+		InvokeWrapper<FormsFieldController> wrapper = Fields.wrapper(type);
 		wrapper.reflect().call(wrapper.annotation().create(), field);
 	}
 	
-	public static void settings(Field field) {
+	public static void settings(Field field, Form form) {
 		if (field.options().is("default")) {
 			field.set(field.option("default"));
 		}
-		FieldControllers.invokeSettings(field, field.type());
+		Fields.invokeSettings(field, field.type(), form);
 	}
 	
-	public static void invokeSettings(Field field, String type) {
-		InvokeWrapper<FormsFieldController> wrapper = FieldControllers.wrapper(type);
+	public static void invokeSettings(Field field, String type, Form form) {
+		InvokeWrapper<FormsFieldController> wrapper = Fields.wrapper(type);
 		if (wrapper.annotation().settingsExtend()) {
 			for (String extend : wrapper.annotation().extend()) {
-				FieldControllers.invokeSettings(field, extend);
+				Fields.invokeSettings(field, extend, form);
 			}
 		}
 		if (wrapper.annotation().settings().length() != 0) {
-			wrapper.reflect().call(wrapper.annotation().settings(), field);
+			wrapper.reflect().call(wrapper.annotation().settings(), field, form);
 		}
 	}
 	
 	public static Field built(Field field) {
-		FieldControllers.invokeBuilt(field, field.type());
+		Fields.invokeBuilt(field, field.type());
 		return field;
 	}
 	
 	public static void invokeBuilt(Field field, String type) {
-		InvokeWrapper<FormsFieldController> wrapper = FieldControllers.wrapper(type);
+		InvokeWrapper<FormsFieldController> wrapper = Fields.wrapper(type);
 		if (wrapper.annotation().builtExtend()) {
 			for (String extend : wrapper.annotation().extend()) {
-				FieldControllers.invokeBuilt(field, extend);
+				Fields.invokeBuilt(field, extend);
 			}
 		}
-		wrapper.reflect().call(wrapper.annotation().built(), field);
+		if (wrapper.annotation().built().length() != 0) {
+			wrapper.reflect().call(wrapper.annotation().built(), field);
+		}
 	}
 	
 	public static void input(Field field, FormInput input) {
-		Var var = field.get();
 		if (!field.option("notinput").bool()) {
+			Var var = field.get();
 			if (field.option("strict").bool()) {
 				if (field.option("default").compare(var)) {
 					input.set(field, new Var());
@@ -117,60 +119,61 @@ public class FieldControllers {
 				input.set(field, var);
 			}
 		}
-		FieldControllers.invokeInput(field, input, field.type());
+		Fields.invokeInput(field, input, field.type());
 	}
 	
 	public static void invokeInput(Field field, FormInput input, String type) {
-		InvokeWrapper<FormsFieldController> wrapper = FieldControllers.wrapper(type);
+		InvokeWrapper<FormsFieldController> wrapper = Fields.wrapper(type);
 		if (wrapper.annotation().input().length() != 0) {
 			wrapper.reflect().call(wrapper.annotation().input(), field, input);
 		}
 	}
 	
 	public static void validate(Form form, Field field) {
-		FieldControllers.invokeValidate(form, field, field.type());
+		Fields.invokeValidate(form, field, field.type());
 	}
 	
 	public static void invokeValidate(Form form, Field field, String type) {
-		InvokeWrapper<FormsFieldController> wrapper = FieldControllers.wrapper(type);
+		InvokeWrapper<FormsFieldController> wrapper = Fields.wrapper(type);
 		if (wrapper.annotation().validate().length() != 0) {
 			wrapper.reflect().call(wrapper.annotation().validate(), form, field);
 		}
 	}
 	
 	public static InvokeWrapper<FormsFieldController> wrapper(String type) {
-		return FieldControllers.types().get(type);
+		return Fields.types().get(type);
 	}
 	
 	public static Var get(Field field) {
 		Var var = new Var();
-		CallFunc getter = FieldControllers.getters.get(field.type());
+		CallFunc getter = Fields.getters.get(field.type());
 		if (getter == null) {
-			InvokeWrapper<FormsFieldController> wrapper = FieldControllers.wrapper(field.type());
+			InvokeWrapper<FormsFieldController> wrapper = Fields.wrapper(field.type());
 			getter = wrapper.reflect().getCall(wrapper.annotation().getter(), Field.class, Var.class);
-			FieldControllers.getters.put(field.type(), getter);
+			Fields.getters.put(field.type(), getter);
 		}
 		getter.call(field, var);
 		return var;
 	}
 	
+	// TODO getter und setter extendable machen
 	public static Var get(Field field, Var var) {
-		CallFunc getter = FieldControllers.getters.get(field.type());
+		CallFunc getter = Fields.getters.get(field.type());
 		if (getter == null) {
-			InvokeWrapper<FormsFieldController> wrapper = FieldControllers.wrapper(field.type());
+			InvokeWrapper<FormsFieldController> wrapper = Fields.wrapper(field.type());
 			getter = wrapper.reflect().getCall(wrapper.annotation().getter(), Field.class, Var.class);
-			FieldControllers.getters.put(field.type(), getter);
+			Fields.getters.put(field.type(), getter);
 		}
 		getter.call(field, var);
 		return var;
 	}
 	
 	public static void set(Field field, Var var) {
-		CallFunc setter = FieldControllers.setters.get(field.type());
+		CallFunc setter = Fields.setters.get(field.type());
 		if (setter == null) {
-			InvokeWrapper<FormsFieldController> wrapper = FieldControllers.wrapper(field.type());
+			InvokeWrapper<FormsFieldController> wrapper = Fields.wrapper(field.type());
 			setter = wrapper.reflect().getCall(wrapper.annotation().setter(), Field.class, Var.class);
-			FieldControllers.setters.put(field.type(), setter);
+			Fields.setters.put(field.type(), setter);
 		}
 		setter.call(field, var);
 	}

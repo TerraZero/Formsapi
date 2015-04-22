@@ -6,9 +6,10 @@ import java.util.List;
 import TZ.forms.Forms;
 import TZ.forms.FormsID;
 import TZ.forms.api.arranger.Arrange;
-import TZ.forms.api.controllers.FieldControllers;
+import TZ.forms.api.controllers.Fields;
 import TZ.forms.api.input.FormInput;
 import TZ.forms.api.types.FieldContainer;
+import TZ.sys.lists.Lists;
 
 /**
  * 
@@ -25,7 +26,6 @@ public class Step implements FormsID {
 	private String name;
 	private String id;
 	private List<Field> fields;
-	private List<Operation> operations;
 	
 	public Step(String name) {
 		this.name = name;
@@ -41,7 +41,6 @@ public class Step implements FormsID {
 	
 	public void init() {
 		this.fields = new ArrayList<Field>();
-		this.operations = new ArrayList<Operation>();
 	}
 	
 	public List<Field> fields() {
@@ -82,7 +81,7 @@ public class Step implements FormsID {
 	
 	public Step input(FormInput input) {
 		for (Field field : this.fields) {
-			FieldControllers.input(field, input);
+			Fields.input(field, input);
 		}
 		return this;
 	}
@@ -102,6 +101,18 @@ public class Step implements FormsID {
 	
 	public Step name(String name) {
 		this.name = name;
+		return this;
+	}
+	
+	public Step settings(Form form) {
+		for (Field field : this.fields) {
+			Fields.settings(field, form);
+		}
+		return this.sort();
+	}
+	
+	public Step sort() {
+		Lists.sortASC(this.fields);
 		return this;
 	}
 	

@@ -16,7 +16,13 @@ import TZ.forms.api.var.Var;
  * @identifier TZ.forms.api.types
  *
  */
-@FormsFieldController(set = "Forms", name = "Checkbox", type = "checkbox", component = JCheckBox.class)
+@FormsFieldController(
+	set = "Forms", 
+	name = "Checkbox", 
+	type = "checkbox", 
+	component = JCheckBox.class,
+	built = "built"
+)
 public class FieldControllerCheckbox {
 	
 	public static void create(Field field) {

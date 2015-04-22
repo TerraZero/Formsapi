@@ -3,6 +3,7 @@ package TZ.forms.api.controllers;
 import javax.swing.JButton;
 
 import TZ.forms.api.Field;
+import TZ.forms.api.Form;
 import TZ.forms.api.annotation.FormsFieldController;
 import TZ.forms.api.var.Var;
 
@@ -16,7 +17,14 @@ import TZ.forms.api.var.Var;
  * @identifier TZ.forms.api.types
  *
  */
-@FormsFieldController(set = "Forms", name = "Button", type = "button", component = JButton.class, settings = "settings")
+@FormsFieldController(
+	set = "Forms", 
+	name = "Button", 
+	type = "button", 
+	component = JButton.class,
+	settings = "settings",
+	built = "built"
+)
 public class FieldControllerButton {
 
 	public static void create(Field field) {
@@ -30,8 +38,9 @@ public class FieldControllerButton {
 		field.option("label", new Var(false)).option("fullwidth", new Var(false));
 	}
 	
-	public static void settings(Field field) {
+	public static void settings(Field field, Form form) {
 		field.component().setSize(field.option("width").number(field.component().getWidth()), field.component().getHeight());
+		field.option("notinput", new Var(true));
 	}
 	
 	public static void get(Field field, Var var) {

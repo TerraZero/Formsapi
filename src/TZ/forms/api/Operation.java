@@ -2,7 +2,7 @@ package TZ.forms.api;
 
 import TZ.forms.Forms;
 import TZ.forms.FormsID;
-import TZ.forms.api.controllers.FieldControllers;
+import TZ.forms.api.controllers.Fields;
 
 /**
  * 
@@ -45,7 +45,7 @@ public class Operation implements FormsID {
 	
 	public Operation create() {
 		if (this.button == null) {
-			this.button = FieldControllers.create(this.type, this.name);
+			this.button = Fields.create(this.type, this.name);
 		}
 		return this;
 	}

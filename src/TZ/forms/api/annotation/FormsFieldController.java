@@ -51,6 +51,7 @@ public @interface FormsFieldController {
 	public String create() default "create";
 	
 	/**
+	 * OPTIONALY
 	 * EXTENDABLE(
 	 * 		function: extend; 
 	 * 		condition: builtExtend;
@@ -58,7 +59,7 @@ public @interface FormsFieldController {
 	 * @param Field field - the field object
 	 * @return static function
 	 */
-	public String built() default "built";
+	public String built() default "";
 	
 	/**
 	 * CONDITION 
@@ -73,6 +74,7 @@ public @interface FormsFieldController {
 	 * 		condition: settingsExtend;
 	 * )
 	 * @param Field field - the field object
+	 * @param Form form - the form of the field
 	 * @return static function
 	 */
 	public String settings() default "";

@@ -42,7 +42,7 @@ public class Forms {
 		panel.setLayout(null);
 		Step step = form.currentStep();
 		
-		for (Field field : step.fields()) {
+		for (Field field : step.settings(form).fields()) {
 			field.show().manageAdd(panel);
 		}
 		
