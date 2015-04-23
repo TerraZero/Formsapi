@@ -60,6 +60,7 @@ public class Field implements FormsID, Weighted {
 		this.type = type;
 		this.id = Forms.toID(this.name);
 		this.init();
+		Fields.create(this);
 	}
 	
 	public Field(String type, String name, String id) {

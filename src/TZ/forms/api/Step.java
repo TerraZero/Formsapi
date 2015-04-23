@@ -9,6 +9,8 @@ import TZ.forms.api.arranger.Arrange;
 import TZ.forms.api.controllers.Fields;
 import TZ.forms.api.input.FormInput;
 import TZ.forms.api.types.FieldContainer;
+import TZ.forms.api.validate.FormValidate;
+import TZ.forms.api.validate.FormValidater;
 import TZ.sys.lists.Lists;
 
 /**
@@ -27,6 +29,9 @@ public class Step implements FormsID {
 	private String id;
 	private List<Field> fields;
 	
+	private List<FormValidate> validates;
+	private boolean validated;
+	
 	public Step(String name) {
 		this.name = name;
 		this.id = Forms.toID(this.name);
@@ -41,6 +46,7 @@ public class Step implements FormsID {
 	
 	public void init() {
 		this.fields = new ArrayList<Field>();
+		this.validates = new ArrayList<FormValidate>();
 	}
 	
 	public List<Field> fields() {
@@ -106,6 +112,11 @@ public class Step implements FormsID {
 	
 	public Step settings(Form form) {
 		for (Field field : this.fields) {
+			
+			// set default settings
+			field.weight(field.option("weight").number(field.weight()));
+			
+			// invoke controller settings
 			Fields.settings(field, form);
 		}
 		return this.sort();
@@ -113,6 +124,22 @@ public class Step implements FormsID {
 	
 	public Step sort() {
 		Lists.sortASC(this.fields);
+		return this;
+	}
+	
+	public Step validate(FormValidate validate) {
+		this.validates.add(validate);
+		return this;
+	}
+	
+	public Step validate(Form form, FormInput input) {
+		if (!this.validated) {
+			for (Field field : this.fields) {
+				Fields.validate(form, field);
+			}
+			FormValidater.validate(form, input, this.validates);
+		}
+		this.validated = true;
 		return this;
 	}
 	

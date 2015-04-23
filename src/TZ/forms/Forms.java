@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import TZ.forms.api.Field;
 import TZ.forms.api.Form;
 import TZ.forms.api.Step;
+import TZ.forms.api.excpetions.InvokeException;
 import TZ.sys.Sys;
 
 /**
@@ -74,10 +75,14 @@ public class Forms {
 	}
 	
 	public static void invoke(String id, String operation, Object... parameters) {
-		Sys.cascade(new String[] {
-			"forms:" + operation,
-			id + ":" + operation,
-		}, parameters);
+		try {
+			Sys.cascade(new String[] {
+				"forms:" + operation,
+				id + ":" + operation,
+			}, parameters);
+		} catch (Exception e) {
+			throw new InvokeException(e, "Unexpected invoke error by cascade form operations!", id, operation, parameters);
+		}
 	}
 	 
 }

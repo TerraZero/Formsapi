@@ -39,7 +39,6 @@ public class FieldControllerButton {
 	}
 	
 	public static void settings(Field field, Form form) {
-		field.component().setSize(field.option("width").number(field.component().getWidth()), field.component().getHeight());
 		field.option("notinput", new Var(true));
 	}
 	

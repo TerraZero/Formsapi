@@ -47,11 +47,13 @@ public class FormFrame {
 	
 	public FormFrame(Form form) {
 		this.form = form;
+		this.form.frame(this);
 	}
 	
 	public FormFrame(Form form, JFrame frame) {
 		this.form = form;
 		this.frame = frame;
+		this.form.frame(this);
 	}
 	
 	public Form form() {

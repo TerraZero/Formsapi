@@ -1,7 +1,10 @@
 package TZ.forms;
 
+import java.awt.Color;
+
 import javax.swing.JFrame;
 
+import TZ.forms.api.Field;
 import TZ.forms.api.Form;
 import TZ.forms.api.controllers.Fields;
 import TZ.forms.api.var.Var;
@@ -35,6 +38,12 @@ public class Test {
 		for (int i = 0; i < 5; i++) {
 			form.step(0).add(Fields.create("checkbox", "Test - " + i).option("default", new Var(i % 2 == 0)));
 		}
+		Field container = new Field("container", "Test Container").option("background", new Var(Color.RED));
+		container.set(new Var(new Field("text", "test label").option("foreground", new Var(Color.white))));
+		form.step(0).add(container);
+		form.step(0).validate((vform, field) -> {
+			vform.error("test");
+		});
 	}
 	
 }

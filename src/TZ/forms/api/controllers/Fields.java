@@ -3,6 +3,7 @@ package TZ.forms.api.controllers;
 import java.util.HashMap;
 import java.util.Map;
 
+import TZ.forms.Forms;
 import TZ.forms.api.Field;
 import TZ.forms.api.Form;
 import TZ.forms.api.annotation.FormsFieldController;
@@ -53,10 +54,13 @@ public class Fields {
 		return Fields.controllers;
 	}
 	
+	public static void create(Field field) {
+		Fields.invokeCreate(field, field.type());
+		Fields.built(field);
+	}
+	
 	public static Field create(String type, String name) {
-		Field field = new Field(type, name);
-		Fields.invokeCreate(field, type);
-		return Fields.built(field);
+		return Fields.create(type, name, Forms.toID(name));
 	}
 	
 	public static Field create(String type, String name, String id) {

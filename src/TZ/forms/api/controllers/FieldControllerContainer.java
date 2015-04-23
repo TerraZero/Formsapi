@@ -24,7 +24,11 @@ import TZ.forms.api.var.Var;
 	component = FieldContainer.class, 
 	settings = "settings", 
 	input = "input",
-	built = "built"
+	built = "built",
+	extend = {
+		"component"
+	},
+	settingsExtend = true
 )
 public class FieldControllerContainer {
 
